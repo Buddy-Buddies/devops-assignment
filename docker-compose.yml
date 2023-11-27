@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: your-docker-username/your-app-name:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=test
+      # Add other environment variables from your .env file
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=your_database
+      - MYSQL_USER=your_db_user
+      - MYSQL_PASSWORD=your_db_password
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mariadb_data:
+  redis_data:
