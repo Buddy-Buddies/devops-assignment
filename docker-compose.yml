@@ -1,14 +1,14 @@
 version: '3'
 
 networks:
-  simple_network:
+  rolla_network:
     driver: bridge
 
 services:
   redis:
     image: redis:latest
     networks:
-      - simple_network
+      - rolla_network
     volumes:
       - redis_data:/data
     environment:
@@ -17,7 +17,7 @@ services:
   mariadb:
     image: mariadb:latest
     networks:
-      - simple_network
+      - rolla_network
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
       - MYSQL_DATABASE=rolla_demo
@@ -37,7 +37,7 @@ services:
       - mariadb
       - redis
     networks:
-      - simple_network
+      - rolla_network
     environment:
       - DATABASE_URL=mysql://rolla_test:your_db_password@mariadb:3306/rolla_demo
       - REDIS_HOST=redis # using service name as hostname since they are in same network
