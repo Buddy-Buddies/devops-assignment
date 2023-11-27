@@ -1,31 +1,48 @@
 version: '3'
 
+networks:
+  simple_network:
+    driver: bridge
+
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: your-docker-username/your-app-name:latest
-    ports:
-      - "8080:8080"
+  redis:
+    image: redis:latest
+    networks:
+      - simple_network
+    volumes:
+      - redis_data:/data
     environment:
-      - NODE_ENV=test
-      # Add other environment variables from your .env file
+      - REDIS_PASSWORD=testredis123!
 
   mariadb:
     image: mariadb:latest
+    networks:
+      - simple_network
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
-      - MYSQL_DATABASE=your_database
-      - MYSQL_USER=your_db_user
+      - MYSQL_DATABASE=rolla_demo
+      - MYSQL_USER=rolla_test
       - MYSQL_PASSWORD=your_db_password
     volumes:
       - mariadb_data:/var/lib/mysql
 
-  redis:
-    image: redis:latest
-    volumes:
-      - redis_data:/data
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: emin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+      - redis
+    networks:
+      - simple_network
+    environment:
+      - DATABASE_URL=mysql://rolla_test:your_db_password@mariadb:3306/rolla_demo
+      - REDIS_HOST=redis # using service name as hostname since they are in same network
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=testredis123!
 
 volumes:
   mariadb_data:
