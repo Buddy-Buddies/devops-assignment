@@ -30,16 +30,13 @@ jobs:
 
     - name: Build Docker image
       run: |
-        BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
+        BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///' | tr '[:upper:]' '[:lower:]')
         IMAGE_TAG="${BRANCH_NAME}-latest-${{ github.run_id }}"
         docker build -t docker.pkg.github.com/buddy-buddies/devops-assignment/nodeapp:${IMAGE_TAG} .
         echo "::set-output name=IMAGE_TAG::${IMAGE_TAG}"
 
     - name: Push Docker image to GitHub Packages
-      run: |
-        echo "${{ secrets.PAT_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-        docker push docker.pkg.github.com/buddy-buddies/devops-assignment/nodeapp:${IMAGE_TAG}
-
+      run: "echo \"${{ secrets.PAT_TOKEN }}\" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin\ndocker push docker.pkg.github.com/buddy-buddies/devops-assignment/nodeapp:${IMAGE_TAG}  \n#magic___^_^___line\n"
   cd:
     runs-on: ubuntu-latest
 
