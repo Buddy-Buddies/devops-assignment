@@ -38,7 +38,7 @@ jobs:
     - name: Push Docker image to GitHub Packages
       run: |
         echo "${{ secrets.PAT_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-        docker push docker.pkg.github.com/Buddy-Buddies/devops-assignment/nodeapp:latest
+        docker push docker.pkg.github.com/buddy-buddies/devops-assignment/nodeapp:latest
 
   cd:
     runs-on: ubuntu-latest
