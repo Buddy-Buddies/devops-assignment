@@ -36,7 +36,10 @@ jobs:
         echo "::set-output name=IMAGE_TAG::${IMAGE_TAG}"
 
     - name: Push Docker image to GitHub Packages
-      run: "echo \"${{ secrets.PAT_TOKEN }}\" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin\ndocker push docker.pkg.github.com/buddy-buddies/devops-assignment/nodeapp:${IMAGE_TAG}
+      run: |
+        echo "${{ secrets.PAT_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+        docker push docker.pkg.github.com/buddy-buddies/devops-assignment/nodeapp:${IMAGE_TAG}
+        
   cd:
     runs-on: ubuntu-latest
 
