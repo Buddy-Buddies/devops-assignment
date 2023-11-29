@@ -32,7 +32,7 @@ jobs:
       run: |
         BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
         IMAGE_TAG="${BRANCH_NAME}-latest-${{ github.run_id }}"
-        docker build -t ${IMAGE_TAG} .
+        docker build -t docker.pkg.github.com/buddy-buddies/devops-assignment/nodeapp:${IMAGE_TAG} .
         echo "::set-output name=IMAGE_TAG::${IMAGE_TAG}"
 
     - name: Push Docker image to GitHub Packages
