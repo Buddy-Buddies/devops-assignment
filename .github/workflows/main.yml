@@ -52,7 +52,7 @@ jobs:
 
     - name: 'Push Docker Image'
       run: |
-        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
+        docker login -u twizoff -p ${{ secrets.DOCKER_HUB_TOKEN }}
         docker push twizoff/devops-assignment:latest
 
   cd:
