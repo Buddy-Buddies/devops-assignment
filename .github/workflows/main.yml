@@ -21,39 +21,14 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # commented for now.
-    # - name: Run tests 
-    #   run: npm test
-
-
-    # - name: 'Login to GitHub Container Registry'
-    #   uses: docker/login-action@v1
-    #   with:
-    #     registry: ghcr.io
-    #     username: ${{github.actor}}
-    #     password: ${{secrets.PAT_TOKEN}}
-
-    # - name: 'Build Docker Image'
-    #   run: |
-    #     docker build . --tag ghcr.io/<your-GitHub-username>/store:latest
-    #     docker push ghcr.io/<your-GitHub-username>/store:latest
-
-    # - name: Build and Publish Docker image
-    #   uses: VaultVulp/gp-docker-action@1.6.0
-    #   with:
-    #     github-token: ${{ secrets.PAT_TOKEN }}
-    #     image-name: node
-    #     image-tag: latest
-
-
     - name: 'Build Docker Image'
       run: |
-        docker build -t twizoff/devops-assignment/node:latest .
+        docker build -t twizoff/devops-assignment:latest .
 
     - name: 'Push Docker Image'
       run: |
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
-        docker push twizoff/devops-assignment/node:latest
+        docker push twizoff/devops-assignment:latest
 
   cd:
     runs-on: ubuntu-latest
@@ -61,11 +36,26 @@ jobs:
     needs: ci
 
     steps:
-    - name: SSH into the server and deploy
+    - name: 'SSH into the server and deploy'
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_HOST }}
+        port: 2222 # Change this to your desired non-standard SSH port
         username: ${{ secrets.SERVER_USERNAME }}
-        password: ${{ secrets.SERVER_PASSWORD }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          # # Ensure that the SSH server configuration file exists and is writable
+          # sudo chmod 644 /etc/ssh/sshd_config
+
+          # # Change the SSH Port
+          # sudo sed -i 's/Port 22/Port 2222/' /etc/ssh/sshd_config
+          # sudo service ssh restart
+
+          # # Ensure the target deployment directory exists
+          # sudo mkdir -p /opt/docker
+
+          # # Copy Docker Compose file or necessary deployment files to the server
+          # scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/opt/docker/
+
+          # Deploy Docker containers
           docker-compose up -d
