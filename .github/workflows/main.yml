@@ -40,22 +40,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_HOST }}
-        port: 2222 # Change this to your desired non-standard SSH port
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         script: |
-          # # Ensure that the SSH server configuration file exists and is writable
-          # sudo chmod 644 /etc/ssh/sshd_config
-
-          # # Change the SSH Port
-          # sudo sed -i 's/Port 22/Port 2222/' /etc/ssh/sshd_config
-          # sudo service ssh restart
-
-          # # Ensure the target deployment directory exists
-          # sudo mkdir -p /opt/docker
-
-          # # Copy Docker Compose file or necessary deployment files to the server
-          # scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/opt/docker/
-
-          # Deploy Docker containers
           docker-compose up -d
