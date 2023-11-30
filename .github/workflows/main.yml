@@ -42,7 +42,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         port: 2222 # Change this to your desired non-standard SSH port
         username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.PUBLIC_SSH_KEY }}
         script: |
           # # Ensure that the SSH server configuration file exists and is writable
           # sudo chmod 644 /etc/ssh/sshd_config
