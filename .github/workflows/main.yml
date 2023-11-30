@@ -48,19 +48,12 @@ jobs:
 
     - name: 'Build Docker Image'
       run: |
-        IMAGE_TAG="node-${{ github.run_id }}"
-        docker build -t twizoff/devops-assignment:${IMAGE_TAG} .
-        echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
-
-    - name: 'Set Image Tag Output'
-      # Set the output variable with the image tag
-      run: echo "IMAGE_TAG=${{ steps.build.outputs.IMAGE_TAG }}" >> $GITHUB_ENV
+        docker build -t twizoff/devops-assignment:node:latest .
 
     - name: 'Push Docker Image'
       run: |
-        echo $IMAGE_TAG
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
-        docker push twizoff/devops-assignment:$IMAGE_TAG
+        docker push twizoff/devops-assignment:node:latest
 
   cd:
     runs-on: ubuntu-latest
