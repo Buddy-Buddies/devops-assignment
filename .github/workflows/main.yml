@@ -41,9 +41,9 @@ jobs:
     - name: Build and Publish Docker image
       uses: VaultVulp/gp-docker-action@1.6.0
       with:
-        github-token: ${{ secrets.PAT_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-        image-name: node # Provide Docker image name
-        image-tag: latest # Provide Docker image tag
+        github-token: ${{ secrets.PAT_TOKEN }}
+        image-name: node
+        image-tag: latest
 
   cd:
     runs-on: ubuntu-latest
