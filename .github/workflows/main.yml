@@ -48,8 +48,7 @@ jobs:
 
     - name: 'Build Docker Image'
       run: |
-        BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
-        IMAGE_TAG="${BRANCH_NAME}-${{ github.run_id }}"
+        IMAGE_TAG="node-${{ github.run_id }}"
         docker build -t twizoff/devops-assignment:${IMAGE_TAG} .
         echo "::set-output name=IMAGE_TAG::${IMAGE_TAG}"
 
