@@ -38,7 +38,7 @@ jobs:
     #     docker build . --tag ghcr.io/<your-GitHub-username>/store:latest
     #     docker push ghcr.io/<your-GitHub-username>/store:latest
 
-    - name: Build and Publish head Docker image
+    - name: Build and Publish Docker image
       uses: VaultVulp/gp-docker-action@1.6.0
       with:
         github-token: ${{ secrets.PAT_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
