@@ -48,12 +48,15 @@ jobs:
 
     - name: 'Build Docker Image'
       run: |
-        docker build -t twizoff/devops-assignment:latest .
+        BRANCH_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
+        IMAGE_TAG="node-${{ github.run_id }}"
+        docker build -t twizoff/devops-assignment:${IMAGE_TAG} .
+        echo "::set-output name=IMAGE_TAG::${IMAGE_TAG}"
 
     - name: 'Push Docker Image'
       run: |
-        docker login -u twizoff -p ${{ secrets.DOCKER_HUB_TOKEN }}
-        docker push twizoff/devops-assignment:latest
+        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
+        docker push twizoff/devops-assignment:${IMAGE_TAG}
 
   cd:
     runs-on: ubuntu-latest
@@ -68,4 +71,4 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          docker-compose -f /path/to/your/docker-compose.yml up -d
+          docker-compose up -d
