@@ -54,9 +54,9 @@ jobs:
 
     - name: 'Push Docker Image'
       run: |
-        echo ${IMAGE_TAG}
+        echo ${{ steps.build.outputs.IMAGE_TAG }}
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
-        docker push twizoff/devops-assignment:${IMAGE_TAG}
+        docker push twizoff/devops-assignment:${{ steps.build.outputs.IMAGE_TAG }}
 
   cd:
     runs-on: ubuntu-latest
