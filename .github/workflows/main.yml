@@ -48,7 +48,7 @@ jobs:
 
     - name: 'Build Docker Image'
       run: |
-        docker build -t twizoff/devops-assignment:latest
+        docker build -t twizoff/devops-assignment:latest .
 
     - name: 'Build Docker Image'
       run: |
