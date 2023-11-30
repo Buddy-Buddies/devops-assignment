@@ -50,9 +50,9 @@ jobs:
       run: |
         docker build -t twizoff/devops-assignment:latest .
 
-    - name: 'Build Docker Image'
+    - name: 'Push Docker Image'
       run: |
-        docker login -u twizoff -p ${{ secrets.DOCKER_HUB_TOKEN }}
+        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
         docker push twizoff/devops-assignment:latest
 
   cd:
