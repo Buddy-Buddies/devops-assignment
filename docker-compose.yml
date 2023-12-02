@@ -30,7 +30,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: emin
+    image: twizoff/devops-assignment:latest
     ports:
       - "8080:8080"
     depends_on:
