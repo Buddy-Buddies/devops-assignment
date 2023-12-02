@@ -7,12 +7,12 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install application dependencies
-RUN npm install
+# # Install application dependencies
+# RUN npm install
 
-# Install prisma and generate Prisma client
-RUN npm install -g prisma
-RUN npx prisma generate
+# # Install prisma and generate Prisma client
+# RUN npm install -g prisma
+# RUN npx prisma generate
 
 # Bundle app source
 COPY . .

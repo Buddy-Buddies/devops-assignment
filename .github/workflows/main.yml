@@ -45,18 +45,18 @@ jobs:
           whoami
 
     - uses: actions/checkout@v3
-    
-    - name: copy file via ssh password
+
+    - name: Copy files
       uses: appleboy/scp-action@v0.1.4
       with:
         host: ${{ secrets.SERVER_HOST }} #one more
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
-        source: "Dockerfile, docker-compose.yml"
+        source: "docker-compose.yml"
         target: "/opt/docker"
 
-    - name: executing remote ssh commands using ssh key
+    - name: SSH Deploy
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.SERVER_HOST }} #one more
