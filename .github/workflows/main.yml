@@ -53,7 +53,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
-        source: "docker-compose.yml"
+        source: "Dockerfile, docker-compose.yml"
         target: "/opt/docker"
 
     - name: SSH Deploy
