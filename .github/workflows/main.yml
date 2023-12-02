@@ -47,14 +47,10 @@ jobs:
     - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ secrets.SERVER_HOST }}
+        host: ${{ secrets.SERVER_HOST }} #one more
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
         source: "Dockerfile, docker-compose.yml"
         target: "/opt/docker"
-        script: |
-          whoami      
-          cd /opt/docker/ 
-          docker-compose build
-          docker-compose up -d
+        script: "whoami      \ncd /opt/docker/ \ndocker-compose build\ndocker-compose up -d\n"
