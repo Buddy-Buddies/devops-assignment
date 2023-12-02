@@ -50,4 +50,11 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
-        script: "whoami          \n# Ensure the target deployment directory exists\nsudo mkdir -p /opt/docker\n#magic___^_^___line\n# Copy Docker Compose file to the server\nscp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/opt/docker/\n#magic___^_^___line\n# SSH into the server and deploy using docker-compose\nssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} \"cd /opt/docker/ && docker-compose up -d\"\n"
+        port: ${{ secrets.PORT }}
+        source: "Dockerfile, docker-compose.yml"
+        target: "/opt/docker"
+        script: |
+          whoami      
+          cd /opt/docker/ 
+          docker-compose build
+          docker-compose up -d
