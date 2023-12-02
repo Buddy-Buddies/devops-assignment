@@ -53,4 +53,9 @@ jobs:
         port: ${{ secrets.PORT }}
         source: "Dockerfile, docker-compose.yml"
         target: "/opt/docker"
-        script: "whoami      \ncd /opt/docker/ \ndocker-compose build\ndocker-compose up -d\n"
+        script: |
+          whoami      
+          cd /opt/docker/
+          ls
+          docker-compose build
+          docker-compose up -d
