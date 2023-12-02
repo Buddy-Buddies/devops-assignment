@@ -44,15 +44,15 @@ jobs:
         script: |
           whoami
 
-    - name: Copy folder content recursively to remote
-      uses: garygrossgarten/github-action-scp@release
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@v0.1.4
       with:
-        local: Dockerfile
-        remote: /opt/docker/
-        host: ${{ secrets.SERVER_HOST }}
+        host: ${{ secrets.SERVER_HOST }} #one more
         username: ${{ secrets.SERVER_USERNAME }}
-        password: ${{ secrets.SERVER_PASSWORD }}
+        key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
+        source: "Dockerfile, docker-compose.yml"
+        target: "/opt/docker"
 
     - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@v1.0.0
