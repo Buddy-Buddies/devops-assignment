@@ -44,6 +44,8 @@ jobs:
         script: |
           whoami
 
+    - uses: actions/checkout@v3
+    
     - name: copy file via ssh password
       uses: appleboy/scp-action@v0.1.4
       with:
