@@ -40,7 +40,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
-        port: ${{ secrets.PORT }}
+        port: 2222
         script: |
           whoami
 
@@ -51,4 +51,13 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
-        script: whoami
+        script: |
+          whoami          
+          # Ensure the target deployment directory exists
+          sudo mkdir -p /opt/docker
+
+          # Copy Docker Compose file to the server
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/opt/docker/
+
+          # SSH into the server and deploy using docker-compose
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "cd /opt/docker/ && docker-compose up -d"
