@@ -17,8 +17,8 @@ COPY package*.json ./
 # Bundle app source
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 8080
+# Expose port 9100 for metrics
+EXPOSE 9100
 
 # Start the application
 CMD ["node", "app.js"]

@@ -32,7 +32,7 @@ services:
       dockerfile: Dockerfile
     image: twizoff/devops-assignment:latest
     ports:
-      - "8080:8080"
+      - "9100:9100"
     depends_on:
       - mariadb
       - redis
