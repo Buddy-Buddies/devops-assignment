@@ -27,9 +27,6 @@ services:
       - mariadb_data:/var/lib/mysql
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: twizoff/devops-assignment:latest
     ports:
       - "9100:9100"
