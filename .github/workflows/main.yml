@@ -3,7 +3,7 @@ name: Node.js CI/CD Pipeline
 on:
   push:
     branches:
-    - main
+    - master
 
 jobs:
   ci:
@@ -77,9 +77,4 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
-        script: |
-          whoami      
-          cd /opt/docker/
-          ls
-          docker-compose build
-          docker-compose up -d
+        script: "whoami      \ncd /opt/docker/\nls\ndocker-compose build\ndocker-compose up -d\n"
