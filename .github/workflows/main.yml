@@ -27,12 +27,12 @@ jobs:
 
     - name: 'Build Docker Image-Migrate'
       run: |
-        docker push twizoff/devops-migrate:latest .
+        docker build -t twizoff/devops-migrate:latest .
 
     - name: 'Push Docker Image-App'
       run: |
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
-        docker push twizoff/devops-assignment:latest .
+        docker push twizoff/devops-assignment:latest
 
     - name: 'Push Docker Image-Migrate'
       run: |
