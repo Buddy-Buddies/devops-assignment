@@ -32,7 +32,7 @@ jobs:
     - name: 'Push Docker Image-App'
       run: |
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
-        docker push twizoff/devops-assignment:latest
+        docker push twizoff/devops-assignment:latest .
 
     - name: 'Push Docker Image-Migrate'
       run: |
