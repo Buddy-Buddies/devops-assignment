@@ -6,7 +6,7 @@ on:
     - master
 
 jobs:
-  ci:
+  build_and_push_docker_image:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,9 +30,9 @@ jobs:
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
         docker push twizoff/devops-assignment:latest
 
-  cd:
+  deploy_to_server:
     runs-on: ubuntu-latest
-    needs: ci
+    needs: build_and_push_docker_image
     steps:
     - name: 'SSH into the server and deploy'
       uses: appleboy/ssh-action@master
@@ -49,7 +49,7 @@ jobs:
     - name: Copy docker files
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: ${{ secrets.SERVER_HOST }} #one more
+        host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
@@ -58,22 +58,10 @@ jobs:
         force: true
         recursive: true
 
-    # - name: Copy app.js
-    #   uses: appleboy/scp-action@v0.1.4
-    #   with:
-    #     host: ${{ secrets.SERVER_HOST }}
-    #     username: ${{ secrets.SERVER_USERNAME }}
-    #     key: ${{ secrets.PUBLIC_SSH_KEY }}
-    #     port: ${{ secrets.PORT }}
-    #     source: "app.js"
-    #     target: "/usr/src/app/"
-    #     force: true
-    #     recursive: true
-
     - name: SSH Deploy
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ secrets.SERVER_HOST }} #one more
+        host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
