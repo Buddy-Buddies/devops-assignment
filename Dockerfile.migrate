@@ -1,0 +1,16 @@
+# Dockerfile.migrate
+
+FROM node:16
+
+WORKDIR /app
+
+COPY package*.json ./
+# Install netcat
+RUN apt-get update && apt-get install -y netcat
+RUN npm install -g prisma
+RUN npx prisma generate
+COPY prisma/migrations ./prisma/migrations
+COPY apply-migrations.sh .
+
+# Execute migration script and then exit
+CMD ["bash", "apply-migrations.sh" && "exit 0"]

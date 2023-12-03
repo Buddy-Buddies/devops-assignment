@@ -3,6 +3,7 @@ const redis = require('redis');
 const dotenv = require('dotenv');
 const { PrismaClient } = require('@prisma/client');
 const client = require('prom-client');
+const seedDatabase = require('./prisma/seed');
 
 dotenv.config();
 
@@ -82,20 +83,7 @@ app.listen(metricsPort, () => {
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
+
+    // Invoke the seeding script when the application starts
+    seedDatabase();
 });
-
-async function testDatabaseConnection() {
-    try {
-        const result = await prisma.$executeRaw`SELECT 1+1 as result`;
-        if (result) {
-          console.log(result);
-        } else {
-          console.error("Query did not return a result.");
-        }
-      } catch (error) {
-        console.error("Error executing raw query:", error);
-      }
-}
-
-// Call the function to test the database connection
-testDatabaseConnection();

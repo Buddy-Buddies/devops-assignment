@@ -41,10 +41,19 @@ services:
     networks:
       - rolla_network
     environment:
-      - DATABASE_URL=mysql://rolla_test:your_db_password@mariadb:3306/rolla_demo
+      - DATABASE_URL=mysql://root:root_password@mariadb:3306/rolla_demo
       - REDIS_HOST=redis  # using service name as hostname since they are in the same network
       - REDIS_PORT=6379
       - REDIS_PASSWORD=testredis123!
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.migrate
+    depends_on:
+      - app
+    networks:
+      - rolla_network
 
 volumes:
   mariadb_data:
