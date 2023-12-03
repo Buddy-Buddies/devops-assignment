@@ -7,13 +7,14 @@ const client = require('prom-client');
 dotenv.config();
 
 const app = express();
-const port = 9100;
+const port = 3000;
 
 const prisma = new PrismaClient();
 const redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT,
     password: process.env.REDIS_PASSWORD,
+    connect_timeout: 5000,
 });
 
 // Define a counter metric for tracking the number of requests
@@ -25,7 +26,11 @@ const requestsCounter = new client.Counter({
 const checkCache = (req, res, next) => {
     const { userId } = req.params;
     redisClient.get(userId, (err, data) => {
-        if (err) throw err;
+        if (err) {
+            console.error('Redis GET error:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+
         if (data !== null) {
             res.send(JSON.parse(data));
         } else {
@@ -68,6 +73,29 @@ app.get('/metrics', (req, res) => {
     res.end(`${message}\n\n${client.register.metrics()}`);
 });
 
+// Start a separate server for metrics on port 9100
+const metricsPort = 9100;
+
+app.listen(metricsPort, () => {
+    console.log(`Metrics server listening on port ${metricsPort}`);
+});
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+
+async function testDatabaseConnection() {
+    try {
+        const result = await prisma.$executeRaw`SELECT 1+1 as result`;
+        if (result) {
+          console.log(result);
+        } else {
+          console.error("Query did not return a result.");
+        }
+      } catch (error) {
+        console.error("Error executing raw query:", error);
+      }
+}
+
+// Call the function to test the database connection
+testDatabaseConnection();

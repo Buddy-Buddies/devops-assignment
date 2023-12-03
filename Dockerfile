@@ -19,6 +19,7 @@ COPY . .
 
 # Expose port 9100 for metrics
 EXPOSE 9100
+EXPOSE 3000
 
 # Start the application
 CMD ["node", "app.js"]

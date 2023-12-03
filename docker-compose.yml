@@ -13,6 +13,8 @@ services:
       - redis_data:/data
     environment:
       - REDIS_PASSWORD=testredis123!
+    ports:
+      - "6379:6379"
 
   mariadb:
     image: mariadb:latest
@@ -25,11 +27,14 @@ services:
       - MYSQL_PASSWORD=your_db_password
     volumes:
       - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
   app:
     image: twizoff/devops-assignment:latest
     ports:
-      - "9100:9100"
+      - "3000:3000"  # Main application port
+      - "9100:9100"  # Metrics port
     depends_on:
       - mariadb
       - redis
@@ -37,7 +42,7 @@ services:
       - rolla_network
     environment:
       - DATABASE_URL=mysql://rolla_test:your_db_password@mariadb:3306/rolla_demo
-      - REDIS_HOST=redis # using service name as hostname since they are in same network
+      - REDIS_HOST=redis  # using service name as hostname since they are in the same network
       - REDIS_PORT=6379
       - REDIS_PASSWORD=testredis123!
 
