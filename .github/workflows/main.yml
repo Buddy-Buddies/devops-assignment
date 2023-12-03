@@ -25,11 +25,19 @@ jobs:
       run: |
         docker build -t twizoff/devops-assignment:latest .
 
+    - name: 'Build Docker Image-Migrate'
+      run: |
+        docker push twizoff/devops-migrate:latest .
+
     - name: 'Push Docker Image-App'
       run: |
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
         docker push twizoff/devops-assignment:latest
 
+    - name: 'Push Docker Image-Migrate'
+      run: |
+        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u twizoff --password-stdin
+        docker push twizoff/devops-migrate:latest
 
   deploy_to_server:
     runs-on: ubuntu-latest
@@ -54,7 +62,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.PUBLIC_SSH_KEY }}
         port: ${{ secrets.PORT }}
-        source: "Dockerfile.migrate, docker-compose.yml"
+        source: "docker-compose.yml"
         target: "/opt/docker"
         force: true
         recursive: true

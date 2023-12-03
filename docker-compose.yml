@@ -47,9 +47,7 @@ services:
       - REDIS_PASSWORD=testredis123!
 
   migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile.migrate
+    image: twizoff/devops-migrate:latest
     depends_on:
       - app
     networks:
