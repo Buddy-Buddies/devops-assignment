@@ -15,7 +15,12 @@ const redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT,
     password: process.env.REDIS_PASSWORD,
-    connect_timeout: 5000,
+})
+
+console.log(redisClient)
+
+redisClient.on('error', (err) => {
+    console.error('Redis connection error:', err);
 });
 
 // Check if the client is connected
@@ -26,20 +31,10 @@ if (redisClient.connected) {
     console.error('Redis client is not connected');
 }
 
-// Define a counter metric for tracking the number of requests
-const requestsCounter = new client.Counter({
-    name: 'app_requests_total',
-    help: 'Total number of requests to the application',
-});
-
 const checkCache = (req, res, next) => {
     const { userId } = req.params;
     redisClient.get(userId, (err, data) => {
-        if (err) {
-            console.error('Redis GET error:', err);
-            return res.status(500).send('Internal Server Error');
-        }
-
+        if (err) throw err;
         if (data !== null) {
             res.send(JSON.parse(data));
         } else {
@@ -55,9 +50,6 @@ app.get('/', (req, res) => {
 
 app.get('/user/:email', checkCache, async (req, res) => {
     try {
-        // Increment the requests counter for each request
-        requestsCounter.inc();
-
         const { email } = req.params;
         const user = await prisma.user.findUnique({
             where: {
@@ -67,6 +59,7 @@ app.get('/user/:email', checkCache, async (req, res) => {
         if (!user) {
             return res.status(404).send('User not found');
         }
+        console.log("User found")
         redisClient.setex(userId, 3600, JSON.stringify(user));
         res.status(200).json(user);
     } catch (err) {

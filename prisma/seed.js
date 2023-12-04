@@ -8,7 +8,7 @@ async function seedDatabase() {
       // Check if the user already exists
       const existingUser = await prisma.user.findUnique({
         where: {
-          email: 'hello@rolla.app', // Replace with the actual email you're trying to create
+          email: 'hello@rolla.app',
         },
       });
 
@@ -20,7 +20,7 @@ async function seedDatabase() {
         const newUser = await prisma.user.create({
           data: {
             name: 'Rolla User',
-            email: 'hello@rolla.app', // Replace with the actual email you're trying to create
+            email: 'hello@rolla.app',
             location: 'Mostar',
           },
         });
