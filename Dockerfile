@@ -14,5 +14,5 @@ COPY . .
 EXPOSE 9100
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "app.js"]
+# Delay the startup by seconds
+CMD ["sh", "-c", "sleep 15 && node app.js"]

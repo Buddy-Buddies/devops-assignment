@@ -18,6 +18,14 @@ const redisClient = redis.createClient({
     connect_timeout: 5000,
 });
 
+// Check if the client is connected
+if (redisClient.connected) {
+    // Use the Redis client
+    console.log("redis connected")
+} else {
+    console.error('Redis client is not connected');
+}
+
 // Define a counter metric for tracking the number of requests
 const requestsCounter = new client.Counter({
     name: 'app_requests_total',
